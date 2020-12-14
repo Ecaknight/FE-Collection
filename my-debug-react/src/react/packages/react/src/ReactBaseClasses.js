@@ -11,14 +11,15 @@ import ReactNoopUpdateQueue from './ReactNoopUpdateQueue';
 
 const emptyObject = {};
 if (__DEV__) {
+  // 冻结对象，返回被传递的对象，传递对象和返回对象全等，该对象不可以被任何方式修改
   Object.freeze(emptyObject);
 }
 
 /**
  * Base class helpers for the updating state of a component.
+ * 更新组件状态的基类
  */
 function Component(props, context, updater) {
-  debugger;
   this.props = props;
   this.context = context;
   // If a component has string refs, we will assign a different object later.
@@ -27,7 +28,7 @@ function Component(props, context, updater) {
   // renderer.
   this.updater = updater || ReactNoopUpdateQueue;
 }
-
+// 用于区分是Component还是PureComponent继承
 Component.prototype.isReactComponent = {};
 
 /**
@@ -55,6 +56,7 @@ Component.prototype.isReactComponent = {};
  * @final
  * @protected
  */
+// setState方法挂载
 Component.prototype.setState = function(partialState, callback) {
   invariant(
     typeof partialState === 'object' ||
