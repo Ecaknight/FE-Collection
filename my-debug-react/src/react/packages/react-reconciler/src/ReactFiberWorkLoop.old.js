@@ -1233,7 +1233,7 @@ export function discreteUpdates<A, B, C, D, R>(
     }
   }
 }
-
+// 不批量更新
 export function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   const prevExecutionContext = executionContext;
   executionContext &= ~BatchedContext;
@@ -1243,7 +1243,7 @@ export function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   } finally {
     executionContext = prevExecutionContext;
     if (executionContext === NoContext) {
-      // Flush the immediate callbacks that were scheduled during this batch
+      // Flush the immediate callbacks that were scheduled during this batch - 刷新此批处理中计划的立即回调
       resetRenderTimer();
       flushSyncCallbackQueue();
     }

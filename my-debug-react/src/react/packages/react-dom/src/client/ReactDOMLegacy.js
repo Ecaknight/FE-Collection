@@ -171,7 +171,7 @@ function warnOnInvalidCallback(callback: mixed, callerName: string): void {
     }
   }
 }
-
+// 传统渲染子节点到容器上
 function legacyRenderSubtreeIntoContainer(
   parentComponent: ?React$Component<any, any>,
   children: ReactNodeList,
@@ -183,7 +183,7 @@ function legacyRenderSubtreeIntoContainer(
     topLevelUpdateWarnings(container);
     warnOnInvalidCallback(callback === undefined ? null : callback, 'render');
   }
-  console.log('legacyRenderSubtreeIntoContainer container', container, container._reactRootContainer)
+  console.log('legacyRenderSubtreeIntoContainer', children)
   // TODO: Without `any` type, Flow says "Property cannot be accessed on any
   // member of intersection type." Whyyyyyy.
   let root: RootType = (container._reactRootContainer: any);
@@ -305,6 +305,7 @@ export function render(
       );
     }
   }
+  console.log('render', element)
   return legacyRenderSubtreeIntoContainer(
     null,
     element,

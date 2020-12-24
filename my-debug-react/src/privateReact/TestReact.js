@@ -2,6 +2,7 @@ import { Component, Fragment } from 'react'
 
 export default class TestReact extends Component {
   render() {
+    console.log('render', Component)
     return (
       <div>
         <h1>Component Page</h1>

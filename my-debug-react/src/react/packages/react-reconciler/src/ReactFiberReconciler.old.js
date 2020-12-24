@@ -246,7 +246,7 @@ export function createContainer(
 ): OpaqueRoot {
   return createFiberRoot(containerInfo, tag, hydrate, hydrationCallbacks);
 }
-
+// 更新容器
 export function updateContainer(
   element: ReactNodeList,
   container: OpaqueRoot,
@@ -256,6 +256,7 @@ export function updateContainer(
   if (__DEV__) {
     onScheduleRoot(container, element);
   }
+  // 当前fiberNode --- root
   const current = container.current;
   const eventTime = requestEventTime();
   if (__DEV__) {

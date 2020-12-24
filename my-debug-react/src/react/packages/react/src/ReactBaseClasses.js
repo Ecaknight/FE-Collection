@@ -122,6 +122,7 @@ if (__DEV__) {
     }
   }
 }
+console.log('Component.prototype', Component.prototype)
 
 function ComponentDummy() {}
 ComponentDummy.prototype = Component.prototype;
