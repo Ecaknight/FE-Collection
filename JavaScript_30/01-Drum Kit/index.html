@@ -1,70 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>JS Drum Kit</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>JS Drum Kit</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <div class="keys">
+        <div data-key="65" class="key">
+            <kbd>A</kbd>
+            <span class="sound">clap</span>
+        </div>
+        <div data-key="83" class="key">
+            <kbd>S</kbd>
+            <span class="sound">hihat</span>
+        </div>
+        <div data-key="68" class="key">
+            <kbd>D</kbd>
+            <span class="sound">kick</span>
+        </div>
+        <div data-key="70" class="key">
+            <kbd>F</kbd>
+            <span class="sound">openhat</span>
+        </div>
+        <div data-key="71" class="key">
+            <kbd>G</kbd>
+            <span class="sound">boom</span>
+        </div>
+        <div data-key="72" class="key">
+            <kbd>H</kbd>
+            <span class="sound">ride</span>
+        </div>
+        <div data-key="74" class="key">
+            <kbd>J</kbd>
+            <span class="sound">snare</span>
+        </div>
+        <div data-key="75" class="key">
+            <kbd>K</kbd>
+            <span class="sound">tom</span>
+        </div>
+        <div data-key="76" class="key">
+            <kbd>L</kbd>
+            <span class="sound">tink</span>
+        </div>
+    </div>
 
-
-  <div class="keys">
-    <div data-key="65" class="key">
-      <kbd>A</kbd>
-      <span class="sound">clap</span>
-    </div>
-    <div data-key="83" class="key">
-      <kbd>S</kbd>
-      <span class="sound">hihat</span>
-    </div>
-    <div data-key="68" class="key">
-      <kbd>D</kbd>
-      <span class="sound">kick</span>
-    </div>
-    <div data-key="70" class="key">
-      <kbd>F</kbd>
-      <span class="sound">openhat</span>
-    </div>
-    <div data-key="71" class="key">
-      <kbd>G</kbd>
-      <span class="sound">boom</span>
-    </div>
-    <div data-key="72" class="key">
-      <kbd>H</kbd>
-      <span class="sound">ride</span>
-    </div>
-    <div data-key="74" class="key">
-      <kbd>J</kbd>
-      <span class="sound">snare</span>
-    </div>
-    <div data-key="75" class="key">
-      <kbd>K</kbd>
-      <span class="sound">tom</span>
-    </div>
-    <div data-key="76" class="key">
-      <kbd>L</kbd>
-      <span class="sound">tink</span>
-    </div>
-  </div>
-
-  <audio data-key="65" src="sounds/clap.wav"></audio>
-  <audio data-key="83" src="sounds/hihat.wav"></audio>
-  <audio data-key="68" src="sounds/kick.wav"></audio>
-  <audio data-key="70" src="sounds/openhat.wav"></audio>
-  <audio data-key="71" src="sounds/boom.wav"></audio>
-  <audio data-key="72" src="sounds/ride.wav"></audio>
-  <audio data-key="74" src="sounds/snare.wav"></audio>
-  <audio data-key="75" src="sounds/tom.wav"></audio>
-  <audio data-key="76" src="sounds/tink.wav"></audio>
+    <audio data-key="65" src="sounds/clap.wav"></audio>
+    <audio data-key="83" src="sounds/hihat.wav"></audio>
+    <audio data-key="68" src="sounds/kick.wav"></audio>
+    <audio data-key="70" src="sounds/openhat.wav"></audio>
+    <audio data-key="71" src="sounds/boom.wav"></audio>
+    <audio data-key="72" src="sounds/ride.wav"></audio>
+    <audio data-key="74" src="sounds/snare.wav"></audio>
+    <audio data-key="75" src="sounds/tom.wav"></audio>
+    <audio data-key="76" src="sounds/tink.wav"></audio>
 
 </body>
+
 </html>
 <script>
-  function removeTransition (e) {
-    if (e.propertyName === 'transition') {
+    /**
+        需求描述：实现一个按下键盘，有缩放功能的并且有声音的 击鼓乐
+        解读需求：
+        1. 先对界面布局，实现一排整齐排列的字母方快，有图片为背景
+        2. 点击后，字母方快能够有缩放功能，且边框为黄色
+        3. 同时有声音播放，当动作结束时，声音和动画同时结束
+        实现逻辑：
+    */
 
+    // 1. 布局参考index.html 和 style.css
+    // 2. 使用数据属性是为了方便将keyCode和键盘动作触发的dom和好的关联，（当然不一定要这样）
+    // 3. 全局监听keydown事件，实现palySound回调函数，能够拿到每次按下时的对应的dom元素，同时给dom的父元素添加动画
+    // 4. 将包裹按钮的元素进行动画移除监听，如果有transform属性，则移除动画
+
+    function removeTransition(e) {
+        if (e.propertyName !== 'transform') return;
+        e.target.classList.remove('playing')
     }
-  }
 
-  
+    function playSound(e) {
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+        const key = document.querySelector(`div[data-key="${e.keyCode}"]`)
+        if (!audio) return;
+
+        key.classList.add('playing')
+        audio.currentTime = 0
+        audio.paly()
+    }
+
+    const keys = Array.from(document.querySelectorAll('.keys'))
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition))
+
+
+    window.addEventListener('keydown', playSound)
 </script>
