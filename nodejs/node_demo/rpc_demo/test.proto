@@ -1,0 +1,11 @@
+message Course {
+    required float id = 1 ;
+    required float price = 2;
+    required string name = 3;
+}
+
+message Person {
+    required int32 id = 1;
+    required string sex = 2;
+    required string name = 3;
+}
