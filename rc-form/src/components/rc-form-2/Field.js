@@ -1,35 +1,36 @@
-import React from 'react'
-import FormContext from './FormContext';
+import React, { Component } from "react";
+import FormContext from "./FormContext";
 
-export default function Field({ children, name }) {
-  const ctx = React.useContext(FormContext)
-  
-  const [, forceupdate] = React.useState({})
+export default class Field extends Component {
+  static contextType = FormContext;
 
-  React.useEffect(() => {
-    const unRegister = ctx.registerEntyties(Field)
+  componentDidMount() {
+    this.unRegister = this.context.registerEntyties(this);
+  }
 
-    return () => {
-      unRegister()
+  componentWillUnmount() {
+    if (this.unRegister) {
+      this.unRegister();
     }
-  }, [])
+  }
 
-  const onStoreChange = React.useCallback(() => {
-    forceupdate({})
-  }, [])
+  onStoreChange = () => this.forceUpdate();
 
-  const getController = React.useCallback(() => {
-    const { getFieldValue, setFieldValue } = ctx
+  getController = () => {
+    const { getFieldValue, setFieldsValue } = this.context;
+    const { name } = this.props;
+
     return {
       value: getFieldValue(name),
       onChange: (e) => {
-        console.log(e.target.value)
-        const val = e.target.value
-        setFieldValue({ [name]: val })
-      }
-    }
-  }, [])
-  return (
-    React.cloneElement(children, getController)
-  )
+        const val = e.target.value;
+        console.log(val);
+        setFieldsValue({ [name]: val });
+      },
+    };
+  };
+  render() {
+    const { children } = this.props;
+    return React.cloneElement(children, this.getController());
+  }
 }
