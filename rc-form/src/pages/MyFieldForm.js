@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Form, { Field } from "../components/rc-form-2";
+import Form, { Field } from "../components/rc-form-3";
 import Input from "../components/Input";
 
 const nameRules = { required: true, message: "请输入姓名！" };
