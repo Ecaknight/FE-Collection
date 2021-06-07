@@ -1,7 +1,8 @@
 // import logo from './logo.svg';
 import "./App.css";
 import RCForm from "./pages/RCForm";
-import MyFieldForm from "./pages/MyFieldForm";
+// import MyFieldForm from "./pages/MyFieldForm";
+import RefPage from "./pages/RefPage";
 function App() {
   return (
     <div className="App">
@@ -9,7 +10,10 @@ function App() {
       <RCForm />
 
       <br />
-      <MyFieldForm />
+      {/* <MyFieldForm /> */}
+
+      <br />
+      <RefPage />
     </div>
   );
 }
