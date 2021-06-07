@@ -1,19 +1,24 @@
 // import logo from './logo.svg';
 import "./App.css";
-import RCForm from "./pages/RCForm";
+// import RCForm from "./pages/RCForm";
 // import MyFieldForm from "./pages/MyFieldForm";
-import RefPage from "./pages/RefPage";
+// import RefPage1 from "./pages/RefPage-1";
+
+import ReduxPage from "./pages/reduxDemo/ReduxPage";
+
 function App() {
   return (
     <div className="App">
-      <br />
+      {/* <br />
       <RCForm />
 
       <br />
-      {/* <MyFieldForm /> */}
+      <MyFieldForm />
 
       <br />
-      <RefPage />
+      <RefPage1 /> */}
+
+      <ReduxPage />
     </div>
   );
 }
