@@ -1,10 +1,14 @@
 // import logo from './logo.svg';
 import "./App.css";
+import { Provider } from "react-redux";
 // import RCForm from "./pages/RCForm";
 // import MyFieldForm from "./pages/MyFieldForm";
 // import RefPage1 from "./pages/RefPage-1";
 
-import ReduxPage from "./pages/reduxDemo-4/ReduxPage";
+// import ReduxPage from "./pages/reduxDemo-5/ReduxPage";
+import store from "./pages/reactreduxDemo/store";
+// import ReactReduxDemo from "./pages/reactreduxDemo";
+import ReactHook from "./pages/reactreduxDemo/hooks";
 
 function App() {
   return (
@@ -17,8 +21,11 @@ function App() {
 
       <br />
       <RefPage1 /> */}
-
-      <ReduxPage />
+      {/* <ReduxPage /> */}
+      <Provider store={store}>
+        {/* <ReactReduxDemo /> */}
+        <ReactHook />
+      </Provider>
     </div>
   );
 }
