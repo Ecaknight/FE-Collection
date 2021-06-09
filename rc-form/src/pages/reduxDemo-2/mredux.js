@@ -56,7 +56,9 @@ function applyMiddleware(...middlewares) {
   };
 }
 
-// 这里的参数来源于第一次的入参
+// 这里的参数来源于第一次的入参 --- 
+// 返回结果是聚合后的state，思考欠缺了，这里是一个将所有reducer的默认值转为所有的state的工具函数
+// 果然还是要全局思考，可以先看入参和出参知道目的
 function combineReducers(reducers) {
   // 返回函数是因为reducer就是一个函数，这是遵循原来返回的模式，
   // 至于state参数会将所有state的初始值聚合成大的state，需要考虑
