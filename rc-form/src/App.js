@@ -7,8 +7,8 @@ import { Provider } from "react-redux";
 
 // import ReduxPage from "./pages/reduxDemo-5/ReduxPage";
 import store from "./pages/reactreduxDemo/store";
-// import ReactReduxDemo from "./pages/reactreduxDemo";
-import ReactHook from "./pages/reactreduxDemo/hooks";
+// import ReactReduxDemo from "./pages/reactreduxDemo/ReactRedux1";
+import ReactHook from "./pages/reactreduxDemo/ReduxHook1";
 
 function App() {
   return (

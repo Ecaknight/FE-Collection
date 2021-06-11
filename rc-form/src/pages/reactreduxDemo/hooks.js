@@ -9,7 +9,7 @@ export default function Mhooks() {
 
   const add = React.useCallback(() => {
     dispatch({ type: "ADD" });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
