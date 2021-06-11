@@ -6,9 +6,11 @@ import { Provider } from "react-redux";
 // import RefPage1 from "./pages/RefPage-1";
 
 // import ReduxPage from "./pages/reduxDemo-5/ReduxPage";
-import store from "./pages/reactreduxDemo/store";
-// import ReactReduxDemo from "./pages/reactreduxDemo/ReactRedux1";
-import ReactHook from "./pages/reactreduxDemo/ReduxHook1";
+// import store from "./pages/reactreduxDemo/store";
+// import ReactReduxDemo from "./pages/reactreduxDemo";
+// import ReactHook from "./pages/reactreduxDemo/hooks";
+import store from "./pages/ReactRedux1/store";
+import ReactReduxPage from "./pages/ReactRedux1/ReactReduxPage";
 
 function App() {
   return (
@@ -17,14 +19,14 @@ function App() {
       <RCForm />
 
       <br />
-      <MyFieldForm />
+      <MyFieldForm />`
 
       <br />
       <RefPage1 /> */}
       {/* <ReduxPage /> */}
       <Provider store={store}>
         {/* <ReactReduxDemo /> */}
-        <ReactHook />
+        <ReactReduxPage />
       </Provider>
     </div>
   );
