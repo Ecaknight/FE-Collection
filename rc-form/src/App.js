@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import "./App.css";
-import { Provider } from "react-redux";
+// import { Provider } from "react-redux";
 // import RCForm from "./pages/RCForm";
 // import MyFieldForm from "./pages/MyFieldForm";
 // import RefPage1 from "./pages/RefPage-1";
@@ -10,7 +10,9 @@ import { Provider } from "react-redux";
 // import ReactReduxDemo from "./pages/reactreduxDemo";
 // import ReactHook from "./pages/reactreduxDemo/hooks";
 import store from "./pages/ReactRedux1/store";
-import ReactReduxPage from "./pages/ReactRedux1/ReactReduxPage";
+// import ReactReduxPage from "./pages/ReactRedux1/ReactReduxPage";
+import { Provider } from './pages/ReactRedux1/mreactredux'
+import HookPages from './pages/ReactRedux1/HooksPage'
 
 function App() {
   return (
@@ -26,7 +28,8 @@ function App() {
       {/* <ReduxPage /> */}
       <Provider store={store}>
         {/* <ReactReduxDemo /> */}
-        <ReactReduxPage />
+        {/* <ReactReduxPage /> */}
+        <HookPages />
       </Provider>
     </div>
   );

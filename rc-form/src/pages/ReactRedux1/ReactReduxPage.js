@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+// import { connect } from "react-redux";
+// import { bindActionCreators } from "redux";
+import { bindActionCreators, connect } from './mreactredux'
 
 class ReactReduxPage extends Component {
   render() {
@@ -31,4 +32,8 @@ export default connect(
       ...creator,
     };
   }
+  // {
+  //   add: () => ({ type: 'ADD' }),
+  //   minus: () => ({ type: 'MINUS' }),
+  // }
 )(ReactReduxPage);
