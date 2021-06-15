@@ -9,10 +9,13 @@ import "./App.css";
 // import store from "./pages/reactreduxDemo/store";
 // import ReactReduxDemo from "./pages/reactreduxDemo";
 // import ReactHook from "./pages/reactreduxDemo/hooks";
-import store from "./pages/ReactRedux1/store";
-// import ReactReduxPage from "./pages/ReactRedux1/ReactReduxPage";
-import { Provider } from './pages/ReactRedux1/mreactredux'
-import HookPages from './pages/ReactRedux1/HooksPage'
+// import store from "./pages/ReactRedux2/store";
+// import ReactReduxPage from "./pages/ReactRedux3/ReactReduxPage";
+// import ReactHookPage from "./pages/ReactRedux3/ReactHookPage";
+// import { Provider } from "./pages/ReactRedux3/mreactredux";
+import { Provider } from "./lib/react-redux";
+import store from "./pages/Redux+ReactDemo/store";
+import ReactReduxPage from "./pages/Redux+ReactDemo/Redux+ReactPage";
 
 function App() {
   return (
@@ -28,8 +31,8 @@ function App() {
       {/* <ReduxPage /> */}
       <Provider store={store}>
         {/* <ReactReduxDemo /> */}
-        {/* <ReactReduxPage /> */}
-        <HookPages />
+        <ReactReduxPage />
+        {/* <ReactHookPage /> */}
       </Provider>
     </div>
   );
