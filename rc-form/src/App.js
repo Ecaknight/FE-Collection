@@ -1,5 +1,7 @@
 // import logo from './logo.svg';
 import "./App.css";
+import RouterPage from "./pages/RouterDemo1/RouterPage";
+import AuthPage from "./pages/RouterDemo1/AuthPage";
 // import { Provider } from "react-redux";
 // import RCForm from "./pages/RCForm";
 // import MyFieldForm from "./pages/MyFieldForm";
@@ -13,9 +15,9 @@ import "./App.css";
 // import ReactReduxPage from "./pages/ReactRedux3/ReactReduxPage";
 // import ReactHookPage from "./pages/ReactRedux3/ReactHookPage";
 // import { Provider } from "./pages/ReactRedux3/mreactredux";
-import { Provider } from "./lib/react-redux";
-import store from "./pages/Redux+ReactDemo/store";
-import ReactReduxPage from "./pages/Redux+ReactDemo/Redux+ReactPage";
+// import { Provider } from "./lib/react-redux";
+// import store from "./pages/Redux+ReactDemo/store";
+// import ReactReduxPage from "./pages/Redux+ReactDemo/Redux+ReactPage";
 
 function App() {
   return (
@@ -29,11 +31,13 @@ function App() {
       <br />
       <RefPage1 /> */}
       {/* <ReduxPage /> */}
-      <Provider store={store}>
+      {/* <Provider store={store}> */}
         {/* <ReactReduxDemo /> */}
-        <ReactReduxPage />
+        {/* <ReactReduxPage /> */}
         {/* <ReactHookPage /> */}
-      </Provider>
+      {/* </Provider> */}
+      {/* <RouterPage /> */}
+      <AuthPage />
     </div>
   );
 }
