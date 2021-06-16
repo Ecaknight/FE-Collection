@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import "./App.css";
-import RouterPage from "./pages/RouterDemo1/RouterPage";
-import AuthPage from "./pages/RouterDemo1/AuthPage";
+import RouterPage from "./pages/RouterDemo2/RouterPage";
+// import AuthPage from "./pages/RouterDemo1/AuthPage";
 // import { Provider } from "react-redux";
 // import RCForm from "./pages/RCForm";
 // import MyFieldForm from "./pages/MyFieldForm";
@@ -36,8 +36,8 @@ function App() {
         {/* <ReactReduxPage /> */}
         {/* <ReactHookPage /> */}
       {/* </Provider> */}
-      {/* <RouterPage /> */}
-      <AuthPage />
+      <RouterPage />
+      {/* <AuthPage /> */}
     </div>
   );
 }
