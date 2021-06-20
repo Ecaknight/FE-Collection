@@ -1,10 +1,14 @@
-import './App.css';
-import RouterPage from './pages/RouterPage';
+import "./App.css";
+import RouterPage from "./pages/RouterPage";
+import { Provider } from "react-redux";
+import store from "./store";
 
 function App() {
   return (
     <div className="App">
-      <RouterPage />
+      <Provider store={store}>
+        <RouterPage />
+      </Provider>
     </div>
   );
 }
