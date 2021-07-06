@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>实现apply</title>
+  </head>
+  <body>
+    <p>于call类型,但是第二个参数是数组</p>
+  </body>
+</html>
+<script>
+  Function.prototype.myApply = function (context, args = []) {
+    let ctx = context || window;
+    const fn = Symbol();
+    ctx[fn] = this;
+    const res = ctx[fn](...args);
+    delete ctx[fn];
+    return res;
+  };
+
+  const numbers = [5, 6, 2, 3, 7];
+
+  const max = Math.max.myApply(null, numbers);
+
+  console.log(max); // 7
+
+  const min = Math.min.myApply(null, numbers);
+
+  console.log(min); // 2
+
+  var array = ["a", "b"];
+  var elements = [0, 1, 2];
+  array.push.myApply(array, elements);
+  console.info(array);
+
+  function minOfArray(arr) {
+    var min = Infinity;
+    var QUANTUM = 32768;
+
+    for (var i = 0, len = arr.length; i < len; i += QUANTUM) {
+      var submin = Math.min.apply(
+        null,
+        arr.slice(i, Math.min(i + QUANTUM, len))
+      );
+      min = Math.min(submin, min);
+    }
+
+    return min;
+  }
+
+  var min2 = minOfArray([5, 6, 2, 3, 7]);
+  console.log(min2);
+  
+
+  function maxOfArray(arr) {
+    var max = -Infinity
+    var QUANTUM = 32768
+
+    for (let i = 0, len = arr.length; i < len; i+=QUANTUM) {
+      const submax = Math.max.apply(null, arr.slice(i, Math.min(i + QUANTUM, len)))
+      max = Math.max(submax, max)
+    }
+    return max
+  }
+  var max2 = maxOfArray([5, 6, 2, 3, 7]);
+  console.log(max2);
+</script>

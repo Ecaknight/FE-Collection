@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>手写实现call</title>
+  </head>
+  <body>
+    <p>
+      function.call(thisArg, arg1, arg2, ...) thisArg: 函数运行时使用的 this
+      值,非严格模式下，则指定为 null 或 undefined
+      时会自动替换为指向全局对象，原始值会被包装。 第二个参数开始为参数列表
+    </p>
+  </body>
+</html>
+<script>
+  /** 实现
+   *第一个参数为null或者undefined时，this指向全局对象window，值为原始值的指向该原始值的自动包装对象，如 String、Number、Boolean
+    为了避免函数名与上下文(context)的属性发生冲突，使用Symbol类型作为唯一值
+    将函数作为传入的上下文(context)属性执行
+    函数执行完成后删除该属性
+    返回执行结果
+    这里类似将原来的函数放入到context对象, 通过context调用函数,使得this对象执行context,达到改变this指向
+   */
+  Function.prototype.myCall = function (context, ...args) {
+    let ctx = context || window; // 惰性求值, 没有的话取window, 与默认值不同, 默认不支持null
+    const func = Symbol();
+    ctx[func] = this; // this指向调用的函数, 如 xx.myCall()
+    const res = ctx[func](...args); // 执行该函数并取到返回值
+    delete ctx[func]; // 删除后避免污染原来的数据
+    return res;
+  };
+
+  // function Product(name, price) {
+  //   this.name = name;
+  //   this.price = price;
+  // }
+
+  // function Food(name, price) {
+  //   Product.call(this, name, price);
+  //   this.category = "food";
+  // }
+
+  // function Toy(name, price) {
+  //   Product.call(this, name, price);
+  //   this.category = "toy";
+  // }
+
+  // var cheese = new Food("feta", 5);
+  // var fun = new Toy("robot", 40);
+  function greet() {
+    var reply = [
+      this.animal,
+      "typically sleep between",
+      this.sleepDuration,
+    ].join(" ");
+    console.log(reply);
+  }
+
+  var obj = {
+    animal: "cats",
+    sleepDuration: "12 and 16 hours",
+  };
+
+  greet.myCall(obj); // cats typically sleep between 12 and 16 hours
+  const test = [1, 2, 4]
+  console.log(Math.min.myCall(null, ...test));
+</script>
