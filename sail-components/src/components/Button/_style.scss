@@ -1,0 +1,70 @@
+.btn {
+    position: relative;
+    display: inline-block;
+    font-weight: $btn-font-weight;
+    line-height: $btn-line-height;
+    color: $body-color;
+    white-space: nowrap; // 设置如何处理元素中的空白
+    text-align: center;
+    vertical-align: middle;
+    background-image: none; // 用于为一个元素设置一个或者多个背景图像
+    border: $btn-border-width solid transparent;
+    @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $border-radius);
+    box-shadow: $btn-box-shadow;
+    cursor: pointer;
+    // https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions
+    transition: $btn-transition; // 更改CSS属性时控制动画速度的方法
+
+    &.disabled,
+    &[disabled] {
+        cursor: not-allowed; // 不允许 https://developer.mozilla.org/zh-CN/docs/Web/CSS/cursor
+        opacity: $btn-disabled-opacity;
+        box-shadow: none;
+        > * {
+            // https://developer.mozilla.org/zh-CN/docs/Web/CSS/pointer-events
+            pointer-events: none; // 指定在什么情况下 (如果有) 某个特定的图形元素可以成为鼠标事件的 target
+        }
+    }
+}
+
+.btn-lg {
+    @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $btn-font-size-lg, $border-radius-lg);
+}
+
+.btn-sm {
+    @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $border-radius-sm);
+}
+
+.btn-primary {
+    @include button-style($primary, $primary, $white);
+}
+
+.btn-danger {
+    @include button-style($danger, $danger, $white);
+}
+
+.btn-default {
+    @include button-style($white, $gray-400, $body-color, $white, $primary, $primary);
+}
+
+.btn-link {
+    font-weight: $font-weight-normal;
+    color: $btn-link-color;
+    text-decoration: $link-decoration;
+    box-shadow: none;
+    &:hover {
+      color: $btn-link-hover-color;
+      text-decoration: $link-hover-decoration; 
+    }
+    &:focus,
+    &.focus {
+      text-decoration: $link-hover-decoration;
+      box-shadow: none;
+    }
+    &:disabled,
+    &.disabled {
+      color: $btn-link-disabled-color;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+}
