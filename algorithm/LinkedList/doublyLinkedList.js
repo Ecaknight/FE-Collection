@@ -3,6 +3,7 @@ import { DoublyNode } from './linked-models'
 import LinkedList from './linkedlist'
 
 /**
+ * https://github.com/loiane/javascript-datastructures-algorithms/blob/main/src/js/data-structures/doubly-linked-list.js
  * 待优化
  * 可以对insert和remove这两个方法的实现做一些改进。在结果为否的情况下，可以把元素插入双向链表的尾部。
  * 性能也可以有所改进，比如，如果position大于length/2，就最好从尾部开始迭代
@@ -14,7 +15,7 @@ export default class DoublyLinkedList extends LinkedList {
     this.tail = undefined // 对链表最后一个元素的引用
   }
 
-  //   在任意位置插入新元素
+  //  在任意位置插入新元素
   insert (element, index) {
     if (index >= 0 && index <= this.count) {
       const node = new DoublyNode(element)
@@ -48,6 +49,28 @@ export default class DoublyLinkedList extends LinkedList {
   }
 
   removeAt (index) {
-
+    if (index >= 0 && index < this.count) {
+      let current = this.head
+      if (index === 0) {
+        this.head = current.next
+        if (this.count === 1) {
+          this.tail = undefined
+        } else {
+          this.head.prev = undefined
+        }
+      } else if (index === this.count - 1) {
+        current = this.tail
+        this.tail = current.prev
+        this.tail.next = undefined
+      } else {
+        current = this.getElementAt(index)
+        const previous = current.next
+        previous.next = current.next
+        current.next.prev = previous
+      }
+      this.count--
+      return current.element
+    }
+    return undefined
   }
 }
