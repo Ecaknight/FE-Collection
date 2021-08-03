@@ -26,6 +26,7 @@ import {unstable_getThreadID} from 'scheduler/tracing';
 import {initializeUpdateQueue} from './ReactUpdateQueue.old';
 import {LegacyRoot, BlockingRoot, ConcurrentRoot} from './ReactRootTags';
 
+// Fiber的节点信息
 function FiberRootNode(containerInfo, tag, hydrate) {
   this.tag = tag;
   this.containerInfo = containerInfo;
@@ -66,6 +67,7 @@ function FiberRootNode(containerInfo, tag, hydrate) {
   }
 
   if (__DEV__) {
+    // eslint-disable-next-line default-case
     switch (tag) {
       case BlockingRoot:
         this._debugRootType = 'createBlockingRoot()';

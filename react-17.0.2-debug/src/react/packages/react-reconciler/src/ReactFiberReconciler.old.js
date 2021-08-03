@@ -258,6 +258,7 @@ export function updateContainer(
   }
   const current = container.current;
   const eventTime = requestEventTime();
+  console.log('eventTime', eventTime)
   if (__DEV__) {
     // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
     if ('undefined' !== typeof jest) {
@@ -266,7 +267,7 @@ export function updateContainer(
     }
   }
   const lane = requestUpdateLane(current);
-
+  console.log('lane', lane)
   if (enableSchedulingProfiler) {
     markRenderScheduled(lane);
   }
@@ -313,7 +314,7 @@ export function updateContainer(
     }
     update.callback = callback;
   }
-
+  // 调度更新方法
   enqueueUpdate(current, update);
   scheduleUpdateOnFiber(current, lane, eventTime);
 

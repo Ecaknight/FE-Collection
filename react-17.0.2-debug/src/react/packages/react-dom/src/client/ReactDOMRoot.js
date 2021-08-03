@@ -12,24 +12,6 @@ import type { RootTag } from "react-reconciler/src/ReactRootTags";
 import type { MutableSource, ReactNodeList } from "shared/ReactTypes";
 import type { FiberRoot } from "react-reconciler/src/ReactInternalTypes";
 
-export type RootType = {
-  render(children: ReactNodeList): void,
-  unmount(): void,
-  _internalRoot: FiberRoot,
-  ...
-};
-
-export type RootOptions = {
-  hydrate?: boolean,
-  hydrationOptions?: {
-    onHydrated?: (suspenseNode: Comment) => void,
-    onDeleted?: (suspenseNode: Comment) => void,
-    mutableSources?: Array<MutableSource<any>>,
-    ...
-  },
-  ...
-};
-
 import {
   isContainerMarkedAsRoot,
   markContainerAsRoot,
@@ -55,6 +37,24 @@ import {
   ConcurrentRoot,
   LegacyRoot,
 } from "react-reconciler/src/ReactRootTags";
+
+export type RootType = {
+  render(children: ReactNodeList): void,
+  unmount(): void,
+  _internalRoot: FiberRoot,
+  ...
+};
+
+export type RootOptions = {
+  hydrate?: boolean,
+  hydrationOptions?: {
+    onHydrated?: (suspenseNode: Comment) => void,
+    onDeleted?: (suspenseNode: Comment) => void,
+    mutableSources?: Array<MutableSource<any>>,
+    ...
+  },
+  ...
+};
 
 function ReactDOMRoot(container: Container, options: void | RootOptions) {
   this._internalRoot = createRootImpl(container, ConcurrentRoot, options);

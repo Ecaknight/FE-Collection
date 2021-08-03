@@ -386,16 +386,16 @@ export function getWorkInProgressRoot(): FiberRoot | null {
 
 export function requestEventTime() {
   if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
-    // We're inside React, so it's fine to read the actual time.
+    // We're inside React, so it's fine to read the actual time. ??????
     return now();
   }
-  // We're not inside React, so we may be in the middle of a browser event.
+  // We're not inside React, so we may be in the middle of a browser event. ????????????
   if (currentEventTime !== NoTimestamp) {
-    // Use the same start time for all updates until we enter React again.
+    // Use the same start time for all updates until we enter React again. ???????????????,???????
     return currentEventTime;
   }
   // This is the first update since React yielded. Compute a new start time.
-  currentEventTime = now();
+  currentEventTime = now(); // ??????????
   return currentEventTime;
 }
 
@@ -2318,7 +2318,7 @@ function commitMutationEffects(root: FiberRoot, renderPriorityLevel) {
     // bitmap value, we remove the secondary effects from the effect tag and
     // switch on that value.
     const primaryFlags = flags & (Placement | Update | Deletion | Hydrating);
-    outer: switch (primaryFlags) {
+    switch (primaryFlags) {
       case Placement: {
         commitPlacement(nextEffect);
         // Clear the "placement" from effect tag so that we know that this is
