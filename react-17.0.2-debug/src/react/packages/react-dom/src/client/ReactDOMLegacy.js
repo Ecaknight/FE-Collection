@@ -110,19 +110,20 @@ function shouldHydrateDueToLegacyHeuristic(container) {
   );
 }
 
+// 判断根元素是否为空, 来创建根元素容器
 function legacyCreateRootFromDOMContainer(
   container: Container,
   forceHydrate: boolean
 ): RootType {
   // 是否服务端渲染
   const shouldHydrate =
-    forceHydrate || shouldHydrateDueToLegacyHeuristic(container);
+    forceHydrate || shouldHydrateDueToLegacyHeuristic(container); // 第一次创建的时候为false,
   // First clear any existing content.
   // 清掉container只留下一个
   if (!shouldHydrate) {
     let warned = false;
     let rootSibling;
-    while ((rootSibling = container.lastChild)) {
+    while ((rootSibling = container.lastChild)) { // 这里循环判断是否有子元素,有的话就清楚,直到原有的子元素被清空
       if (__DEV__) {
         if (
           !warned &&
@@ -223,6 +224,7 @@ function legacyRenderSubtreeIntoContainer(
     // Update
     updateContainer(children, fiberRoot, parentComponent, callback);
   }
+  console.log('first render to fiber root', fiberRoot)
   return getPublicRootInstance(fiberRoot);
 }
 

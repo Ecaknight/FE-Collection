@@ -260,6 +260,7 @@ export function updateContainer(
   // fiber节点
   const current = container.current;
   const eventTime = requestEventTime();
+  console.log('eventTime', eventTime)
   if (__DEV__) {
     // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
     if ("undefined" !== typeof jest) {
@@ -269,7 +270,7 @@ export function updateContainer(
   }
   // reactdom.render初始化的时候mode是8
   const lane = requestUpdateLane(current);
-
+  console.log('lane', lane)
   if (enableSchedulingProfiler) {
     markRenderScheduled(lane);
   }
@@ -316,7 +317,7 @@ export function updateContainer(
     }
     update.callback = callback;
   }
-  // ! 2.更新任务入队列
+  // 调度更新方法
   enqueueUpdate(current, update);
   // ! 3.处理fiber上的更新任务
   scheduleUpdateOnFiber(current, lane, eventTime);
