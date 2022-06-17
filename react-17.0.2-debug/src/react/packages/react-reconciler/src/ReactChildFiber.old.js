@@ -1,3 +1,5 @@
+/* eslint-disable default-case */
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -750,7 +752,7 @@ function ChildReconciler(shouldTrackSideEffects) {
     }
     return knownKeys;
   }
-
+  // ! diff重点
   function reconcileChildrenArray(
     returnFiber: Fiber,
     currentFirstChild: Fiber | null,
@@ -784,14 +786,19 @@ function ChildReconciler(shouldTrackSideEffects) {
         knownKeys = warnOnInvalidKey(child, knownKeys, returnFiber);
       }
     }
-
+    // 返回的子节点
     let resultingFirstChild: Fiber | null = null;
+    // 记录上一个子节点
     let previousNewFiber: Fiber | null = null;
-
+    // 老的子节点，初始值是第一个子节点，后面根据sibling走
     let oldFiber = currentFirstChild;
+    // 记录上一个插入节点的位置
     let lastPlacedIndex = 0;
+    // 遍历下标
     let newIdx = 0;
+    // 下一个老的子节点
     let nextOldFiber = null;
+    // 初次渲染进不来
     for (; oldFiber !== null && newIdx < newChildren.length; newIdx++) {
       if (oldFiber.index > newIdx) {
         nextOldFiber = oldFiber;
@@ -836,13 +843,13 @@ function ChildReconciler(shouldTrackSideEffects) {
       previousNewFiber = newFiber;
       oldFiber = nextOldFiber;
     }
-
+    // 遍历结束,如果老的链表还有子节点，就可以全删除
     if (newIdx === newChildren.length) {
       // We've reached the end of the new children. We can delete the rest.
       deleteRemainingChildren(returnFiber, oldFiber);
       return resultingFirstChild;
     }
-
+    // 初始渲染走这里
     if (oldFiber === null) {
       // If we don't have any more existing children we can choose a fast path
       // since the rest will all be insertions.
@@ -851,6 +858,7 @@ function ChildReconciler(shouldTrackSideEffects) {
         if (newFiber === null) {
           continue;
         }
+        // 插入子节点
         lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx);
         if (previousNewFiber === null) {
           // TODO: Move out of the loop. This only happens for the first run.
@@ -864,6 +872,8 @@ function ChildReconciler(shouldTrackSideEffects) {
     }
 
     // Add all children to a key map for quick lookups.
+    // 查询存在的节点,节点的复用
+    // 使用map的原因，方便查询2：13左右10min，看看map的原因
     const existingChildren = mapRemainingChildren(returnFiber, oldFiber);
 
     // Keep scanning and use the map to restore deleted items as moves.
@@ -896,7 +906,7 @@ function ChildReconciler(shouldTrackSideEffects) {
         previousNewFiber = newFiber;
       }
     }
-
+    // * shouldTrackSideEffects标识是初次渲染还是更新
     if (shouldTrackSideEffects) {
       // Any existing children that weren't consumed above were deleted. We need
       // to add them to the deletion list.
@@ -1118,7 +1128,7 @@ function ChildReconciler(shouldTrackSideEffects) {
   function reconcileSingleElement(
     returnFiber: Fiber,
     currentFirstChild: Fiber | null,
-    element: ReactElement,
+    element: ReactElement, // 最新元素的
     lanes: Lanes,
   ): Fiber {
     const key = element.key;
@@ -1157,6 +1167,7 @@ function ChildReconciler(shouldTrackSideEffects) {
               resolveLazy(elementType) === child.type)
           ) {
             deleteRemainingChildren(returnFiber, child.sibling);
+            // 复用之前的元素
             const existing = useFiber(child, element.props);
             existing.ref = coerceRef(returnFiber, child, element);
             existing.return = returnFiber;

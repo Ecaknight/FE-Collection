@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    class EventEmeitter {
+        constructor() {
+            this._events = this._events || new Map()
+            // this.maxListeners = this.maxListeners || 10
+        }
+    }
+    // 触发事件
+    EventEmeitter.prototype.emit = function (type, ...args) {
+        let handler
+        handler = this._events.get(type)
+        if (!handler) return false
+        console.log('handler', handler)
+         // 多个监听函数依次触发
+         for (let i = 0; i < handler.length; i++) {
+                handler[i].apply(this, args)
+                // handler[i](...args)
+            }
+        return true
+    }
+
+    // 监听事件
+    EventEmeitter.prototype.addListener = function (type, fn) {
+        let handler = this._events.get(type)
+        if (!handler) {
+            this._events.set(type, [fn])
+        } else {
+            handler.push(fn)
+        }
+    }
+
+    // 移出事件
+    EventEmeitter.prototype.removeListener = function (type, fn) {
+        const handler = this._events.get(type)
+        if (!handler) return false
+
+        if (handler && handler.length === 1) {
+            this._events.delete(type)
+        } else {
+            const len = handler.length
+            let pos
+            let i = 0
+            while (i < len) {
+                if (handler[pos] === fn) {
+                    pos = i    
+                } else {
+                    pos = -1
+                }
+                i++
+            }
+
+            if (pos !== -1) {
+                handler.splice(pos, 1)
+            }
+        }
+        return true
+    }
+
+    const events = new EventEmeitter()
+
+    events.addListener('add', () => {
+        console.log('add')
+    })
+    console.log(events)
+    const ret = events.emit('add')
+    console.log('ret', ret)
+</script>

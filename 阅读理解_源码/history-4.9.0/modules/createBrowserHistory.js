@@ -36,10 +36,13 @@ function getHistoryState() {
  * pushState, replaceState, and the popstate event.
  */
 function createBrowserHistory(props = {}) {
+  // 判断是否浏览器环境
   invariant(canUseDOM, 'Browser history needs a DOM');
 
+  // 全局history
   const globalHistory = window.history;
-  const canUseHistory = supportsHistory();
+  // 是否能使用history
+  const canUseHistory = supportsHistory(); 
   const needsHashChangeListener = !supportsPopStateOnHashChange();
 
   const {
@@ -47,10 +50,12 @@ function createBrowserHistory(props = {}) {
     getUserConfirmation = getConfirmation,
     keyLength = 6
   } = props;
+  // 兼容basename
   const basename = props.basename
     ? stripTrailingSlash(addLeadingSlash(props.basename))
     : '';
 
+    // 获取dom的location，将location解析为对象
   function getDOMLocation(historyState) {
     const { key, state } = historyState || {};
     const { pathname, search, hash } = window.location;
@@ -78,14 +83,17 @@ function createBrowserHistory(props = {}) {
       .substr(2, keyLength);
   }
 
+  // 处理路由转换，记录监听listen信息 - 发布-订阅
   const transitionManager = createTransitionManager();
 
+  // 通知更新listen信息
   function setState(nextState) {
     Object.assign(history, nextState);
     history.length = globalHistory.length;
     transitionManager.notifyListeners(history.location, history.action);
   }
 
+  // popstate回调函数
   function handlePopState(event) {
     // Ignore extraneous popstate events in WebKit.
     if (isExtraneousPopstateEvent(event)) return;

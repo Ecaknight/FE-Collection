@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>javascript 继承</title>
+  </head>
+  <body>
+    <script>
+      // -----原型链继承----------
+      //   function Parent() {
+      //     this.name = "parent";
+      //   }
+      //   Parent.prototype.getParentName = function () {
+      //     console.log(this.name);
+      //   };
+
+      //   function Child() {
+      //     this.childName = "child";
+      //   }
+      //   Child.prototype = new Parent();
+      //   Child.prototype.getChildName = function () {
+      //     console.log(this.childName);
+      //   };
+      //   var inst = new Child();
+      //   inst.getParentName(); // parent
+
+      // ----原型链共享问题----
+      //   function Parent() {
+      //     this.name = ["Tom", "Alice"];
+      //   }
+
+      //   function Child() {}
+      //   Child.prototype = new Parent();
+
+      //   var inst = new Child();
+      //   inst.name.push('小明');
+      //   console.log(inst.name); //  ['Tom', 'Alice', '小明']
+
+      //   var inst2 = new Child()
+      //   console.log(inst2.name); //  ['Tom', 'Alice', '小明']
+
+      // function Parent(name) {
+      //     this.name = name
+      //     this.friends = ['Tom', 'xiaomi']
+      // }
+      // function Child(name, age) {
+      //     Parent.call(this, name)
+      //     this.age = age
+      // }
+      // const inst = new Child('xiaomi', 18)
+      // inst.friends.push('Alice')
+      // console.log(inst.friends); // ['Tom', 'xiaomi', 'Alice']
+
+      // const inst2 = new Child('jin', 20)
+      // console.log(inst2.friends); // ['Tom', 'xiaomi']
+
+      // 组合继承
+      // function Parent(name) {
+      //   this.name = name;
+      //   this.friends = ["xiaohong", "xiaomi"];
+      // }
+      // Parent.prototype.sayName = function () {
+      //   console.log(this.name);
+      // };
+      // function Child(name, age) {
+      //   Parent.call(this, name);
+      //   this.age = age;
+      // }
+      // Child.prototype = new Parent();
+      // Child.prototype.constructor = Child;
+
+      // Child.prototype.sayAge = function () {
+      //   console.log(this.age);
+      // };
+      // var inst = new Child("Tom", 10);
+      // inst.friends.push("Alice");
+      // console.log(inst.friends); // ['xiaohong', 'xiaomi', 'Alice']
+      // inst.sayName(); // Tom
+      // inst.sayAge(); // 10
+
+      // var inst2 = new Child("Jin", 17);
+      // console.log(inst2.friends); //  ['xiaohong', 'xiaomi']
+      // inst2.sayName(); // Jin
+      // inst2.sayAge(); // 17
+
+      // --- 原型式继承 ---
+      // function createObject(o) {
+      //   function F() {}
+      //   F.prototype = o
+      //   return new F()
+      // }
+      // let person = {
+      //   name: 'Tom',
+      //   friends: ['Alice', 'xiaoming']
+      // }
+      // let o1 = createObject(person)
+      // o1.name = 'o1'
+      // o1.friends.push('xiaohong')
+
+      // let o2 = createObject(person)
+      // o2.name = 'o2'
+      // o2.friends.push('haha')
+
+      // console.log(o2.friends); // ['Alice', 'xiaoming', 'xiaohong', 'haha']
+
+      // 寄生式组合继承
+      function object(o) {
+        function F() {}
+        F.prototype = o;
+        return new F();
+      }
+      function inheritPrototype(superType, subType) {
+        let prototype = object(superType.prototype);
+        prototype.constructor = subType;
+        subType.prototype = prototype;
+      }
+      function Parent(name) {
+        this.name = name;
+      }
+      Parent.prototype.sayName = function () {
+        console.log(this.name);
+      };
+      function Child(name, age) {
+        Parent.call(this, name);
+        this.age = age;
+      }
+      inheritPrototype(Parent, Child);
+      Child.prototype.sayAge = function () {
+        console.log(this.age);
+      };
+
+      let c1 = new Child("Tom", 30);
+      c1.sayName(); // Tom
+      c1.sayAge(); // 30
+
+      // let c2 = new Child('Alice', 18)
+      // c2.sayName()
+      // c2.sayAge()
+    </script>
+  </body>
+</html>
+<script>
+  function deepClone(target) {
+    let newObj; // 定义一个变量，准备接新副本对象
+    // 如果当前需要深拷贝的是一个引用类型对象
+    if (typeof target === "object") {
+      if (Array.isArray(target)) {
+        // 如果是一个数组
+        newObj = []; // 将newObj赋值为一个数组，并遍历
+        for (let i in target) {
+          // 递归克隆数组中的每一项
+          newObj.push(deepClone(target[i]));
+        }
+        // 判断如果当前的值是null；直接赋值为null
+      } else if (target === null) {
+        newObj = null;
+        // 判断如果当前的值是一个正则表达式对象，直接赋值
+      } else if (target.constructor === RegExp) {
+        newObj = target;
+      } else {
+        // 否则是普通对象，直接for in循环递归遍历复制对象中每个属性值
+        newObj = {};
+        for (let i in target) {
+          newObj[i] = deepClone(target[i]);
+        }
+      }
+      // 如果不是对象而是原始数据类型，那么直接赋值
+    } else {
+      newObj = target;
+    }
+    // 返回最终结果 return newObj;
+  }
+</script>

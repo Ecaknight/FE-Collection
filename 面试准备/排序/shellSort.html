@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>希尔排序</title>
+</head>
+<body>
+    <p>
+        是简单插入排序的改进版；
+        它与插入排序的不同之处在于，它会优先比较距离较远的元素。希尔排序又叫缩小增量排序
+    </p>
+    <p>
+        希尔排序的核心在于间隔序列的设定。既可以提前设定好间隔序列，也可以动态的定义间隔序列。
+    </p>
+    <1>. 选择一个增量序列t1，t2，…，tk，其中ti>tj，tk=1；
+    <2>.按增量序列个数k，对序列进行k 趟排序；
+    <3>.每趟排序，根据对应的增量ti，将待排序列分割成若干长度为m 的子序列，分别对各子表进行直接插入排序。仅增量因子为1 时，整个序列作为一个表来处理，表长度即为整个序列的长度。
+    <p>
+        这里的增量序列排序解： 若第一次以5为间隔序列，这里每个5个元素就将后一个元素设置为同一个序列的，
+        依次找到所有的同间隔元素，然后这里最多将5组，将每组元素插入排序，然后再5/2取2， 这里依次上面的步骤
+        将数组分为2组且取间隔为2的每个元素，最后直到序列为1，认为就只有一组，在进行插入排序
+    </p>
+    最佳情况：T(n) = O(nlog2 n)
+    最坏情况：T(n) = O(nlog2 n)
+    平均情况：T(n) =O(nlog n)
+</body>
+</html>
+<script>
+function shellSort (arr) {
+    var len = arr.length, tmp, gap = 1
+    while (gap < len / 5) { // 动态定义间隔序列
+        gap = gap * 5 + 1
+    }
+
+    for (gap; gap > 0; gap = Math.floor(gap / 5)) { // 对每个序列的元素插入排序
+        for (var i = gap; i < len; i++) {
+            for (var j = i - gap; j >= 0 && arr[j] > arr[j + gap]; j -= gap) {
+                tmp = arr[j]
+                arr[j] = arr[j + gap]
+                arr[j + gap] = tmp
+            }
+        }
+    }
+
+    return arr
+}
+var arr=[3,44,38,5,47,15,36,26,27,2,46,4,19,50,48];
+console.log(shellSort(arr));
+</script>

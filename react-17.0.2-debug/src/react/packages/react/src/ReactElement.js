@@ -422,7 +422,7 @@ export function createElement(type, config, children) {
       }
     }
   }
-  return ReactElement(
+  const newElement = ReactElement(
     type,
     key,
     ref,
@@ -431,6 +431,8 @@ export function createElement(type, config, children) {
     ReactCurrentOwner.current,
     props,
   );
+  console.log('createElement', newElement)
+  return newElement
 }
 
 /**

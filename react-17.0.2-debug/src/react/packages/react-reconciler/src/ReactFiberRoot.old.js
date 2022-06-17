@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -86,18 +87,20 @@ export function createFiberRoot(
   hydrate: boolean,
   hydrationCallbacks: null | SuspenseHydrationCallbacks,
 ): FiberRoot {
+  // 实例一个fiberRoot结构
   const root: FiberRoot = (new FiberRootNode(containerInfo, tag, hydrate): any);
-  if (enableSuspenseCallback) {
+  if (enableSuspenseCallback) { // 不支持Suspense的回调
     root.hydrationCallbacks = hydrationCallbacks;
   }
 
   // Cyclic construction. This cheats the type system right now because
   // stateNode is any.
+  // 构造循环引用，root.current会指向
   const uninitializedFiber = createHostRootFiber(tag);
   root.current = uninitializedFiber;
   uninitializedFiber.stateNode = root;
 
-  initializeUpdateQueue(uninitializedFiber);
-
+  initializeUpdateQueue(uninitializedFiber); // 初始化更新队列？
+  // console.log('createFiberRoot', uninitializedFiber)
   return root;
 }

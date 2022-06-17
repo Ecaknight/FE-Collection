@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    function handleFetchQueue(urls, max, cb) {
+        let urlsCopy = [...urls]
+        let count = 0
+        request()
+
+        function request() {
+            function handler() {
+                console.log('end 当前并发数为: ', count)
+                count--
+
+                if (urlsCopy.length) {
+                    request() // 请求下一个
+                } else if (count === 0) {
+                    cb()
+                }
+            }
+            count++
+            console.log('start 当前并发数为: ' + count);
+            fetch(urlsCopy.shift()).then(handler).catch(handler)
+            // 如果还没有超过当前限制，可以多请求
+            count < max && request()
+        }
+    }
+
+    const urls = []
+    for (let i = 1; i < 20; i++) {
+        urls.push(i)
+    }
+
+    const fetch = function (idx) {
+        return new Promise(resolve => {
+            console.log(`start request ${idx}`);
+            const timeout = parseInt(Math.random() * 1e4);
+            setTimeout(() => {
+                console.log(`end request ${idx}`);
+                resolve(idx)
+            }, timeout)
+        })
+    };
+
+    const max = 4;
+
+    const callback = () => {
+        console.log('run callback');
+    };
+
+
+    handleFetchQueue(urls, max, callback);
+
+// 方案二：Promise
+function sendRequest (urls, max, cb) {
+    let pending_count = 0
+    let idx = 0
+
+    while (pending_count < max) {
+        _fetch(urls[idx++])
+    }
+
+    async function _fetch (url) {
+        if (!url) return
+
+        pending_count ++
+        console.log(url + ':start','并发数: '+pending_count); 
+        await fetch(url)
+        pending_count--
+        console.log(url + ':done','并发数: '+pending_count); 
+        _fetch(url[idx++])
+        // 如果都完成了就回调
+        pending_count || cb && cb()
+    }
+}
+
+
+
+</script>

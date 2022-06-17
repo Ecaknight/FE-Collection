@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    // L 表示实例对象
+    // R 表示判断的构造函数
+    function InstanceOf (L, R) {
+        let rProto = R.prototype
+        let lProto = L.__proto__
+        while (true) {
+            if (lProto === null) {
+                return false
+            }
+            if (lProto === rProto) {
+                return true
+            }
+            lProto = lProto.__proto__
+        }
+    }
+</script>

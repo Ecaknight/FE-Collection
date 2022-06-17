@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+
+    Function.prototype.call2 = function (context) {
+        // context兼容非object的情况
+        var context = context || window
+        // 挂载一个函数到context，用来执行
+        context.fn = this
+        let args = [] // 参数放进去
+        for (let i = 1; i < arguments.length; i++) {
+            args.push(arguments[i])
+        }
+
+        let ret = context.fn(...args)
+        delete context.fn
+        return ret
+    }
+
+
+    Function.prototype.apply2 = function (context, arr) {
+        var context = Object(context) || window
+        context.fn = this
+
+        var ret
+        if (!arr) {
+            ret = context.fn()
+        } else {
+            var args = []
+            for (var i = 0; i < arr.length; i++) {
+                args.push(arr[i])
+            }
+            ret = context.fn(...args)
+        }
+
+        delete context.fn
+
+        return ret
+    }
+
+    // 返回一个函数，绑定this，传递预置参数
+    // bind返回的函数可以作为构造函数使用。故作为构造函数时应使得this失效，但是传入的参数依然有效
+    Function.prototype.bind2 = function (fn) {
+        if (typeof fn !== 'function') {
+            throw new Error('不是函数')
+        }
+
+        var self = this
+        var args = Array.prototype.slice.call(arguments, 1)
+
+        var fNOP = function () { }
+
+        var fBound = function () {
+            var bindArgs = Array.prototype.slice.call(arguments)
+            return self.apply(this instanceof fNOP ? this : context, args.concat(bindArgs))
+        }
+        fNOP.prototype = this.prototype
+        fBound.prototype = new fNOP()
+
+        return fBound
+    }
+
+    var value = 2;
+
+    var obj = {
+        value: 1
+    }
+
+    function bar(name, age) {
+        console.log(this.value);
+        return {
+            value: this.value,
+            name: name,
+            age: age
+        }
+    }
+
+    // bar.call2(null); // 2
+
+    console.log(bar.apply2(obj, ['kevin', 18]));
+
+    // var value = 2;
+    var foo = {
+        value: 1,
+        bar: bar1.bind(null)
+    };
+
+    function bar1() {
+        console.log(this.value);
+    }
+
+    foo.bar() // 2
+</script>

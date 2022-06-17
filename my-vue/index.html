@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物车</title>
+    <style>
+        .message-box {
+            padding: 10px 20px;
+            background: #4fc08d;
+            border: 1px solid #42b983;
+        }
+
+        .message-box-close {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 组件插槽 -->
+        <message :show.sync="show">
+            <!-- 具名插槽 -->
+            <template v-slot:title>恭喜</template>
+            <template>新增课程成功!</template>
+        </message>
+        <!-- 插值文本 -->
+        <h2 v-bind:title="title">{{title}}</h2>
+        <course-add v-model="course" @add-course="addCourse"></course-add>
+        <!-- 列表渲染 -->
+        <course-list :courses="courses"></course-list>
+        <!-- 课程总数 -->
+        <p>课程总数: {{ total }}</p>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script>
+    // 插槽组件
+    Vue.component('message', {
+        props: ['show'],
+        template: `
+            <div class="message-box" v-if="show">
+                <strong><slot name="title"></slot></strong>
+                <slot></slot>
+                <span class="message-box-close" @click="$emit('update:show', false)">X</span>
+            </div>
+        `
+    })
+    /**
+     * v-model --->  :value="value" @input="onInput"
+     * 
+    */
+    Vue.component('course-add', {
+        props: ['value'],
+        template: `
+            <div>
+                <p>
+                    <input type="text" :value="value"
+                        @input="onInput"
+                        v-on:keydown.enter="addCourse" />
+                    <button @click="addCourse">新增</button>
+                </p>    
+            </div>
+        `,
+        methods: {
+            addCourse() {
+                this.$emit('add-course')
+            },
+            onInput(e) {
+                // 将事件派发给v-model
+                this.$emit('input', e.target.value)
+            }
+        },
+    })
+    // 列表渲染组件
+    Vue.component('course-list', {
+        data() {
+            return {
+                selectedCourse: ''
+            }
+        }, // 内部state
+        props: {
+            courses: {
+                type: Array,
+                default: []
+            }
+        }, // 外部传过来的属性
+        // 组件模板
+        template: `
+        <div>
+            <div 
+            v-for="item in courses" 
+            :key="item" 
+            :style="{backgroundColor: (selectedCourse === item) ? '#ddd' : 'transparent'}"
+            @click="selectedCourse = item"
+            >
+            {{ item }}
+            </div>
+        </div>
+        `,
+    })
+    
+    const app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                title: '购物车',
+                course: '',
+                courses: ['web全栈', 'web高级'],
+                message: 'Hello',
+                total: 0,
+                show: false,
+            }
+        },
+        // computed: {
+        //     total() {
+        //         return this.courses.length
+        //     }
+        // },
+        watch: {
+            courses: {
+                immediate: true,
+                // deep: true,
+                handler(newValue, oldValue) {
+                    this.total = newValue.length
+                }
+            }
+        },
+        methods: {
+            addCourse() {
+                this.show = true
+                this.courses.push(this.course)
+                this.course = ''
+            },
+
+        }
+    })
+
+
+    console.log(app.$options.render)
+</script>

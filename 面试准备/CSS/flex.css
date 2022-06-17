@@ -1,0 +1,33 @@
+[class$="face"] {
+    margin: 16px;
+    padding: 4px;
+    background-color: #e7e7e7;
+    width: 104px;
+    height: 104px;
+    /* 上下左右的顺序 */
+    box-shadow: inset 0 5px white, inset 0 -5px #bbbbbb, inset 5px 0 #d7d7d7, inset -5px 0 #d7d7d7;
+}
+
+/* 设置黑色圆点 */
+.item {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin: 4px;
+    background-color: #333;
+    box-shadow: inset 0 3px #111, inset 0 -3px #555555;
+}
+
+.first-face {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

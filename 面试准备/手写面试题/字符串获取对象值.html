@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  const obj = {
+    selector: {
+      to: {
+        toutiao: "Fe code",
+      },
+    },
+    target: [
+      1,
+      2,
+      {
+        name: "byted",
+      },
+    ],
+  };
+
+  console.log(get(obj, "selector.to.toutiao"));
+
+  console.log(get(obj, "target[2].name"));
+
+  function get(props, keys) {
+    const path = keys.split('.').map(key => {
+        // 如果不用正则要怎么写？        
+    })
+    return keys.split(".").reduce((ret, key) => {
+      console.log(ret[key]);
+      return ret[key];
+    }, props);
+  }
+</script>

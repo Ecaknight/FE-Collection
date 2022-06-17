@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    // 原型链继承 
+    // 1. 简单，可以共享实例， 
+    // 2. 但共享实例也存在问题，如果有引用值的情况，会影响到所有的实例
+    // 3. 子类型不能给父类型传参，容易影响其他的实例
+
+    function SuperType() {
+        this.property = true
+    }
+    SuperType.prototype.getSuperValue = function () {
+        return this.property
+    }
+    function SubType() {
+        this.sub = false
+    }
+    // 继承
+    SubType.prototype = new SuperType()
+    SubType.prototype.getSubValue = function () {
+        return this.sub
+    }
+    const instance = new SubType()
+    console.log(instance.getSuperValue());
+
+    // 最理想的继承
+    function Parent(name) {
+        this.parent = name
+    }
+    Parent.prototype.say = function () {
+        console.log(`${this.parent}: 你的样子不错`)
+    }
+
+    function Child(name, parent) {
+        Parent.call(this, parent)
+        this.child = name
+    }
+    Child.prototype = Object.create(Parent.prototype)
+    Child.prototype.say = function () {
+        console.log(`${this.parent}号，我是小号：${this.child}`)
+    }
+    Child.prototype.constractor = Child
+
+    var parent = new Parent('father');
+    parent.say()
+
+    var child = new Child('cxk', 'father');
+    child.say()
+</script>

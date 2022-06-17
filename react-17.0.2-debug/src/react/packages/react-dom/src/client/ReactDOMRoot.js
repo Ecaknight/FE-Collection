@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -120,6 +121,7 @@ function createRootImpl(
   options: void | RootOptions
 ) {
   // Tag is either LegacyRoot or Concurrent Root
+  // 这里是服务端相关的判断---------start
   const hydrate = options != null && options.hydrate === true;
   const hydrationCallbacks =
     (options != null && options.hydrationOptions) || null;
@@ -128,11 +130,15 @@ function createRootImpl(
       options.hydrationOptions != null &&
       options.hydrationOptions.mutableSources) ||
     null;
+  // 这里是服务端相关的判断---------end
+  // 创建container，这里current会指向fiber数据，fiber的stateNode指向container的fiberRoot
   const root = createContainer(container, tag, hydrate, hydrationCallbacks);
+  // 给container添加一个新属性__reactContainerxxx
   markContainerAsRoot(root.current, container);
 
   const rootContainerElement =
     container.nodeType === COMMENT_NODE ? container.parentNode : container;
+  // 注册事件到container中 --- 这里就是将所有的事件都注册到了container除了selectionChange
   listenToAllSupportedEvents(rootContainerElement);
 
   if (mutableSources) {
@@ -173,6 +179,7 @@ export function createLegacyRoot(
   container: Container,
   options?: RootOptions
 ): RootType {
+  // LegacyRoot 是 0
   return new ReactDOMBlockingRoot(container, LegacyRoot, options);
 }
 

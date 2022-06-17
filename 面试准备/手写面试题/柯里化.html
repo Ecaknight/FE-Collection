@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    // 合成：经过多个函数的中间步骤变成另外一个函数， 参考中间件概念
+    function f1 (a) {
+        console.log('f1', a)
+        return a
+    }
+
+    function f2 (a) {
+        console.log('f2', a)
+        return a
+    }
+
+    function f3 (a) {
+        console.log('f3', a)
+        return a
+    }
+
+    function compose (...funs) {
+        if (funs.length === 0) {
+            return args => args
+        }
+        if (funs.length === 1) return funs[0]
+
+        return funs.reduce((a, b) => (...args) => a(b(...args)))
+    }
+
+    console.log('====================================');
+    console.log(compose(f1, f2, f3)('omg'));
+    console.log('====================================');
+
+    // 柯里化: 多个参数变成一个单一参数的函数并返回接受余下参数返回结果的新函数
+
+    function add (x, y) {
+        return x + y
+    }
+
+    // const ret = add(1, 2)
+
+    // // 柯里化后
+    // function add (x) {
+    //     return function (y) {
+    //         return x + y
+    //     }
+    // }
+
+    // const increment = add(1)
+    // const sum = increment(10)
+    // console.log('====================================');
+    // console.log('sum', sum);
+    // console.log('====================================');
+
+    function createCurry(funcs, args) {
+        // 拿到函数的形参个数
+        var argity = funcs.length
+        var args = args || []
+
+        return function () {
+            var _args = [].slice.apply(arguments)
+            args.push(..._args)
+            if (args.length < argity) {
+                return createCurry.call(this, funcs, args)
+            }
+            return funcs.apply(this, args)
+        }
+    }
+    
+    function createCurry(funcs, args) {
+        var xincan = funcs.length
+        var args = args || []
+
+        return function () {
+            var _args = [].slice.apply(arguments)
+            args.push(..._args)
+            if (args.length < xincan) {
+                return createCurry.call(this, funcs, args)
+            }
+            return funcs.apply(this, args)
+        }
+    }
+</script>

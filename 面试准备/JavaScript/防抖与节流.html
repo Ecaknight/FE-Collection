@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    // 按钮提交场景：防⽌多次提交按钮，只执⾏最后提交的⼀次
+    // 服务端验证场景：表单验证需要服务端配合，只执⾏⼀段连续的输⼊事件的最后⼀次，还有搜索联想词功能类
+    const debounce = (fn, delay) => {
+        let timer = null
+        return (...args) => {
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+                fn.apply(this, args)
+            }, delay)
+        }
+    }
+
+    function log() {
+        console.log('------------');
+    }
+
+    debounce(log(), 1000)
+
+
+    function debounce1(fn, delay, immedite) {
+        let timer
+        let debounced = function () {
+            let context = this
+            if (timer) {
+                clearTimeout(timer)
+            }
+            if (immedite) {
+                const callNow = !timer
+                if (callNow) {
+                    fn.apply(context, arguments)
+                }
+                timer = setTimeout(() => {
+                    timer = null // 垃圾回收
+                }, delay)
+            } else {
+                setTimeout(() => {
+                    fn.apply(context, arguments)
+                }, delay)
+            }
+        }
+        debounced.cancel = function() {
+            clearTimeout(timer)
+            timer = null
+        }
+
+        return debounced
+    }
+
+    // 节流
+    // 规定在一个单位时间内，只能触发一次函数。如果这个单位时间内触发多次函数，只有一次生效。
+    const throttle = (fn, delay = 500) => {
+        let flag = true
+        return (...args) => {
+            if (!flag) return
+            flag = false
+            setTimeout(() => {
+                fn.apply(this, args)
+                flag = true
+            }, delay)
+        }
+    }
+
+    const throttle = (fn, delay = 500) => {
+        let flag = true
+        return (...args) => {
+            if (!flag) return
+            flag = false
+            setTimeout(() => {
+                fn.apply(this, args)
+                flag = true
+            }, delay)
+        }
+    }
+    // 防抖：次数
+    // 节流：频率
+
+    function throttle (fn, delay = 500) {
+        let flag = true
+        return (...args) => {
+            if (!flag) return
+            flag = true
+            setTimeout(() => {
+                fn.apply(this, args)
+                flag = true
+            }, delay)
+        }
+    }
+
+    function throttle (fn, delay = 500) {
+        let last = 0
+        return function () {
+            let now = +new Date()
+            if (last - now > delay) {
+                last = now
+                fn.apply(this, [...arguments])
+            }
+        }
+    }
+    
+</script>

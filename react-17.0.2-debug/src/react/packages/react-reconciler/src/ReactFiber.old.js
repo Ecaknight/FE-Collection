@@ -1,3 +1,5 @@
+/* eslint-disable default-case */
+/* eslint-disable no-labels */
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -213,6 +215,7 @@ const createFiber = function(
   mode: TypeOfMode,
 ): Fiber {
   // $FlowFixMe: the shapes are exact here but Flow doesn't like constructors
+  // tag是3，mode是NoMode
   return new FiberNode(tag, pendingProps, key, mode);
 };
 
@@ -446,7 +449,7 @@ export function createHostRootFiber(tag: RootTag): Fiber {
     // Without some nodes in the tree having empty base times.
     mode |= ProfileMode;
   }
-
+  // 首次render mode是NoMode， HostRoot为根节点的值为3
   return createFiber(HostRoot, null, null, mode);
 }
 

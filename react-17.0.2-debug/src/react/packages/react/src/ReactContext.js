@@ -46,6 +46,7 @@ export function createContext<T>(
     // supports within in a single renderer. Such as parallel server rendering.
     _threadCount: 0,
     // These are circular
+    // ！循环引用
     Provider: (null: any),
     Consumer: (null: any),
   };

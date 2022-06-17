@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网格布局</title>
+    <style>
+        .grid {
+            display: flex;
+        }
+        .cell {
+            flex: 1;
+            background-color: red;
+        }
+        .cell:nth-child(2) {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <!-- 利用flex-grow的属性为1，等分设置 -->
+    <div class="grid">
+        <div class="cell">1</div>
+        <div class="cell">2</div>
+        <div class="cell">3</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择器</title>
+    <style>
+        /* 属性选择器 */
+        a[href] {
+            color: red;
+        }
+
+        input[type=text] {
+            color: red;
+        }
+
+        /* input[class="input text"] {
+            color: green;
+        } */
+        /* 包含属性 */
+        input[class~="input"] {
+            color: hotpink;
+        }
+
+        /* 属性值为 xxx 或 xxx- 开头的元素 */
+        div[class|=article] {
+            color: red;
+        }
+
+        /* 以 xxx 开头的元素 */
+        div[class^=article] {
+            color: sandybrown;
+        }
+
+        /* 以 xxx 结尾的元素 */
+        /* [class$=disabled] {
+            display: none;
+        } */
+
+        /* 值中包含 xxx 字符的所有元素。这个选择器的规则算是最宽泛的， */
+        [class*=disabled] {
+            display: none;
+        }
+
+        .page p {
+            font-size: 18px;
+        }
+
+        .page>p {
+            color: red;
+        }
+        /* 相邻兄弟选择器 能选择紧挨后面的元素 */
+        h1 + p {
+            margin-top: 10px;
+            color: red;
+        }
+
+        /* 通用兄弟选择器会匹配选择器 A 指定元素后面的所有符合选择器 B 规则的元素 */
+        h1 ~ p {
+            color: green;
+        }
+
+        /* 交集：中间不需要加空格或者其他符号 */
+        .menu-item {
+            background-color: #ccc;
+            color: #000000;
+        }
+        .menu-item.active {
+            background-color: #aaa;
+            color: #ffffff;
+        }
+
+        /* 并集选择器就是用逗号分割多个选择器 */
+        h1, h2, h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 伪类选择器 :link :visited :hover :active :focus */
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* 伪元素选择器选中的并不是真实的 DOM 元素，所以叫伪元素选择器 */
+        /* ::first-line  ::first-letter ::before ::after ::selection */
+    </style>
+</head>
+
+<body>
+    <a href="">主页</a>
+    <input type="text" value="大花碗里扣个大花活蛤蟆" />
+    <input type="password" value="123" />
+    <input class="input text" type="text" value="大花碗里扣个大花活蛤蟆" />
+
+    <div class="article">我是article</div>
+    <div class="article-title">我是article-title</div>
+    <div class="article-content">我是article-content</div>
+    <div class="article_footer">我是article_footer，不是以artical-开头的</div>
+
+    <button class="btn btn-disabled">禁用的按钮</button>
+    <select class="select select-disabled city-select"></select>
+    <input class="input input-disabled" value="禁用的输入框" />
+
+    <!-- 后代选择器 -->
+    <div class="page">
+        <div class="article">
+            <p>黑化肥发灰，灰化肥发黑</p>
+            <h1>我是标题部分</h1>
+            <p>黑化肥发灰会挥发；灰化肥挥发会发黑</p>
+            <p>黑化肥挥发发灰会花飞；灰化肥挥发发黑会飞花</p>
+        </div>
+        <p class="footer">版权 © tuituitech.com</p>
+    </div>
+
+    <!-- 子元素 只找子元素，而不会把所有的后代都找一遍 -->
+
+    <div class="menu">
+        <a class="menu-item">菜单1</a>
+        <a class="menu-item active">菜单2</a>
+        <a class="menu-item">菜单3</a>
+        <a class="menu-item">菜单4</a>
+    </div>
+</body>
+
+</html>

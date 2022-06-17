@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百分比布局</title>
+    <style>
+        div {
+            border: 1px solid red;
+        }
+        .grid {
+            display: flex;
+            /* flex-wrap: wrap; */
+            margin: 0 4px;
+        }
+        .cell {
+            flex: 1;
+        }
+        .cell.u-ful1 {
+            flex: 0 0 100%;
+        }
+        .cell.u-ful2 {
+            flex: 0 0 50%;
+        }
+        .cell.u-ful3 {
+            flex: 0 0 33.333%;
+        }
+        .cell.u-ful4 {
+            flex: 0 0 25%;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="cell u-ful4">1</div>
+        <div class="cell">2</div>
+        <div class="cell u-ful3">3</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="../minified/TweenMax.min.js"></script>
+        <style>
+            body {
+                background-color: #fff;
+                font-family: sans-serif;
+                color: #1d1d1d;
+                margin: 0;
+                font-size: 16px;
+            }
+            p {
+                margin: 10px;
+            }
+            #scoreDisplay {
+                font-size: 40px;
+                text-align: center;
+                margin-top: 70px;
+            }
+            #box, #fbox {
+                margin-top: 10px;
+                display: inline-block;
+                width: 50px;
+                height: 50px;
+                background-color: aquamarine;
+            }
+            #fbox {
+                background-color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="scroe"></div>
+            <div id="box"></div>
+            <div id="fbox"></div>
+        </div>
+    </body>
+</html>
+<script>
+var demo = { scroe: 0 }
+var scroeDisplay = document.getElementById('scroe')
+
+var tween = TweenMax.to(demo, 20, {
+    scroe: 100,
+    onUpdate: showScroe
+})
+function showScroe() {
+    scroeDisplay.innerHTML = demo.scroe.toFixed(2)
+}
+
+TweenMax.to('#box', 5, {
+    x: 500,
+    alpha: 0.3
+})
+TweenMax.from('#fbox', 2, {
+    x: 500
+})
+</script>

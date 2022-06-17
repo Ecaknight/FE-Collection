@@ -114,9 +114,11 @@ function legacyCreateRootFromDOMContainer(
   container: Container,
   forceHydrate: boolean
 ): RootType {
+  // 是否服务端渲染
   const shouldHydrate =
     forceHydrate || shouldHydrateDueToLegacyHeuristic(container);
   // First clear any existing content.
+  // 清掉container只留下一个
   if (!shouldHydrate) {
     let warned = false;
     let rootSibling;
@@ -183,18 +185,20 @@ function legacyRenderSubtreeIntoContainer(
     topLevelUpdateWarnings(container);
     warnOnInvalidCallback(callback === undefined ? null : callback, "render");
   }
-
+  debugger
   // TODO: Without `any` type, Flow says "Property cannot be accessed on any
   // member of intersection type." Whyyyyyy.
   let root: RootType = (container._reactRootContainer: any);
   let fiberRoot;
+  // 首次调用render方法进入
   if (!root) {
-    // Initial mount
+    // Initial mount 初始化节点，构建fiberRoot
     root = container._reactRootContainer = legacyCreateRootFromDOMContainer(
       container,
       forceHydrate
     );
     fiberRoot = root._internalRoot;
+    console.log('fiberRoot', fiberRoot, children)
     if (typeof callback === "function") {
       const originalCallback = callback;
       callback = function () {
@@ -203,6 +207,7 @@ function legacyRenderSubtreeIntoContainer(
       };
     }
     // Initial mount should not be batched.
+    // 初始化执行非批量更新
     unbatchedUpdates(() => {
       updateContainer(children, fiberRoot, parentComponent, callback);
     });
@@ -305,6 +310,7 @@ export function render(
       );
     }
   }
+
   return legacyRenderSubtreeIntoContainer(
     null,
     element,

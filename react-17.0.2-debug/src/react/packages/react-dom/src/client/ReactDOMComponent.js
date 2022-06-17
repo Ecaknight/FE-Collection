@@ -266,7 +266,7 @@ export function trapClickOnNonInteractiveElement(node: HTMLElement) {
   // TODO: Only do this for the relevant Safaris maybe?
   node.onclick = noop;
 }
-
+// 初始化属性
 function setInitialDOMProperties(
   tag: string,
   domElement: Element,
@@ -318,6 +318,7 @@ function setInitialDOMProperties(
       // adding a special case here, but then it wouldn't be emitted
       // on server rendering (but we *do* want to emit it in SSR).
     } else if (registrationNameDependencies.hasOwnProperty(propKey)) {
+      console.log('registrationNameDependencies', registrationNameDependencies)
       if (nextProp != null) {
         if (__DEV__ && typeof nextProp !== 'function') {
           warnForInvalidEventListener(propKey, nextProp);

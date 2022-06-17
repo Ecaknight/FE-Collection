@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+
+    Array.prototype.mySome = function (fn, value) {
+        if (typeof fn !== 'function') return false
+
+        const arr = this
+        let i = 0
+        while (i < arr.length) {
+            const ret = fn.call(value, arr[i], i, arr)
+            if (ret) {
+                return true
+            }
+            i++
+        }
+        return false
+    }
+
+    Array.prototype.myEvery = function (fn, thisArg) {
+        if (typeof fn !== 'function') return false
+
+        const arr = this
+        let i = 0;
+        let len = arr.length
+
+        while (i < len) {
+            const ret = fn.call(thisArg, arr[i], i, arr)
+            if (!ret) return false
+            i++
+        }
+        return true
+    }
+
+    Array.prototype.xflat = function (dep = 1) {
+        return this.reduce((acc, val) => {
+            return acc.concat(Array.isArray(val) && dep > 0 ? val.xflat(--dep) : Array.isArray(val) ? [val] : val)
+        })
+    }
+
+    Array.prototype.myFlat = function (dep = 1) {
+        return this.reduce((acc, val) => {
+            // concat 支持 [3].concat([4]) [2].concat(3)
+            return acc.concat(Array.isArray(val) && dep > 0
+                ? val.myFlat(--dep) // 递归调用
+                : Array.isArray(val) ? [val] : val)
+        }, [])
+    }
+
+    // const arr = []
+    // const fn = (a) => a % 2 === 0
+    // const ret = arr.myEvery(fn)
+    // console.log('some', ret)
+
+    // const arr1 = [0, 1, 2, [3, 4]];
+
+    // console.log(arr1.myFlat());
+
+    // const arr2 = [0, 1, 2, [[[3, 4]]]];
+
+    // console.log(arr2.myFlat(3));
+
+    var arr1 = [1, 2, [3, 4]];
+    console.log(arr1.myFlat());
+    // [1, 2, 3, 4]
+
+    var arr2 = [1, 2, [3, 4, [5, 6]]];
+    console.log(arr2.myFlat());
+    // [1, 2, 3, 4, [5, 6]]
+
+    var arr3 = [1, 2, [3, 4, [5, 6]]];
+    console.log(arr3.myFlat(2));
+    // [1, 2, 3, 4, 5, 6]
+
+    //使用 Infinity，可展开任意深度的嵌套数组
+    var arr4 = [1, 2, [3, 4, [5, 6, [7, 8, [9, 10]]]]];
+    console.log(arr4.myFlat(Infinity));;
+// [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+</script>

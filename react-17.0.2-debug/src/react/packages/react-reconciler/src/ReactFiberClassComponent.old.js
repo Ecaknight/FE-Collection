@@ -190,7 +190,7 @@ export function applyDerivedStateFromProps(
     updateQueue.baseState = memoizedState;
   }
 }
-
+// 类组件
 const classComponentUpdater = {
   isMounted,
   enqueueSetState(inst, payload, callback) {
@@ -562,7 +562,8 @@ function checkClassInstance(workInProgress: Fiber, ctor: any, newProps: any) {
 }
 
 function adoptClassInstance(workInProgress: Fiber, instance: any): void {
-  instance.updater = classComponentUpdater;
+  // * setState执行的updater是enqueueSetState
+  instance.updater = classComponentUpdater; // 这里使得Component的update执行的是enqueueUpdater
   workInProgress.stateNode = instance;
   // The instance needs access to the fiber so that it can schedule updates
   setInstance(instance, workInProgress);
@@ -570,7 +571,7 @@ function adoptClassInstance(workInProgress: Fiber, instance: any): void {
     instance._reactInternalInstance = fakeInternalInstance;
   }
 }
-
+// 初始化
 function constructClassInstance(
   workInProgress: Fiber,
   ctor: any,
@@ -815,6 +816,7 @@ function mountClassInstance(
     checkClassInstance(workInProgress, ctor, newProps);
   }
 
+  // * 因为已经实例过了，取实例化的值
   const instance = workInProgress.stateNode;
   instance.props = newProps;
   instance.state = workInProgress.memoizedState;
@@ -862,8 +864,9 @@ function mountClassInstance(
   }
 
   processUpdateQueue(workInProgress, newProps, instance, renderLanes);
+  // 把fiber的state更新到实例上，所以让我们用this.state可以拿到最新的state
   instance.state = workInProgress.memoizedState;
-
+  // 通过类获取
   const getDerivedStateFromProps = ctor.getDerivedStateFromProps;
   if (typeof getDerivedStateFromProps === 'function') {
     applyDerivedStateFromProps(
@@ -872,6 +875,7 @@ function mountClassInstance(
       getDerivedStateFromProps,
       newProps,
     );
+    // * 因为这里props会修改state，所以要重新赋值
     instance.state = workInProgress.memoizedState;
   }
 
@@ -1162,7 +1166,7 @@ function updateClassInstance(
     );
     newState = workInProgress.memoizedState;
   }
-
+// * 根据shouldComponentUpdate生命周期执行更新
   const shouldUpdate =
     checkHasForceUpdateAfterProcessing() ||
     checkShouldComponentUpdate(

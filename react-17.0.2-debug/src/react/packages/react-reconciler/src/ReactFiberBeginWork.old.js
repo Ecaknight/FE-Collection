@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -229,7 +230,7 @@ if (__DEV__) {
   didWarnAboutTailOptions = {};
   didWarnAboutDefaultPropsOnFunctionComponent = {};
 }
-
+// * 协调子节点
 export function reconcileChildren(
   current: Fiber | null,
   workInProgress: Fiber,
@@ -241,6 +242,7 @@ export function reconcileChildren(
     // won't update its child set by applying minimal side-effects. Instead,
     // we will add them all to the child before it gets rendered. That means
     // we can optimize this reconciliation pass by not tracking side-effects.
+    // 初次渲染
     workInProgress.child = mountChildFibers(
       workInProgress,
       null,
@@ -254,6 +256,7 @@ export function reconcileChildren(
 
     // If we had any progressed work already, that is invalid at this point so
     // let's throw it out.
+    // 更新
     workInProgress.child = reconcileChildFibers(
       workInProgress,
       current.child,
@@ -807,6 +810,7 @@ function updateClassComponent(
   // Push context providers early to prevent context stack mismatches.
   // During mounting we don't know the child context yet as the instance doesn't exist.
   // We will invalidate the child context in finishClassComponent() right after rendering.
+  // 处理context
   let hasContext;
   if (isLegacyContextProvider(Component)) {
     hasContext = true;
@@ -815,7 +819,7 @@ function updateClassComponent(
     hasContext = false;
   }
   prepareToReadContext(workInProgress, renderLanes);
-
+  // * stateNode若是dom节点，则存dom节点；如果是类组件，则是stateNode存的是实例
   const instance = workInProgress.stateNode;
   let shouldUpdate;
   if (instance === null) {
@@ -830,11 +834,15 @@ function updateClassComponent(
       workInProgress.flags |= Placement;
     }
     // In the initial pass we might need to construct the instance.
+    // 构造函数初始化 ---- constructor
     constructClassInstance(workInProgress, Component, nextProps);
+    // 挂载阶段
     mountClassInstance(workInProgress, Component, nextProps, renderLanes);
+    // * 初次渲染更新
     shouldUpdate = true;
   } else if (current === null) {
     // In a resume, we'll already have an instance we can reuse.
+    // 中断后，重新更新
     shouldUpdate = resumeMountClassInstance(
       workInProgress,
       Component,
@@ -842,6 +850,9 @@ function updateClassComponent(
       renderLanes,
     );
   } else {
+    // 更新阶段
+    // * 如果是PureC，内置了SCU
+    // * 如果是com，看是否定义SCU，默认返回时true
     shouldUpdate = updateClassInstance(
       current,
       workInProgress,
@@ -850,6 +861,7 @@ function updateClassComponent(
       renderLanes,
     );
   }
+  // 返回下一个
   const nextUnitOfWork = finishClassComponent(
     current,
     workInProgress,
@@ -950,6 +962,7 @@ function finishClassComponent(
       renderLanes,
     );
   } else {
+    // * 协调子节点
     reconcileChildren(current, workInProgress, nextChildren, renderLanes);
   }
 
@@ -3022,7 +3035,7 @@ function remountFiber(
 }
 
 function beginWork(
-  current: Fiber | null,
+  current: Fiber | null, // 老的fiber，初次渲染，没有老的就是null
   workInProgress: Fiber,
   renderLanes: Lanes,
 ): Fiber | null {
@@ -3047,6 +3060,7 @@ function beginWork(
   }
 
   if (current !== null) {
+    // 节点更新： 原因props 、state、context变化
     const oldProps = current.memoizedProps;
     const newProps = workInProgress.pendingProps;
 
@@ -3058,12 +3072,14 @@ function beginWork(
     ) {
       // If props or context changed, mark the fiber as having performed work.
       // This may be unset if the props are determined to be equal later (memo).
+      // * props、context发生变化
       didReceiveUpdate = true;
     } else if (!includesSomeLane(renderLanes, updateLanes)) {
       didReceiveUpdate = false;
       // This fiber does not have any pending work. Bailout without entering
       // the begin phase. There's still some bookkeeping we that needs to be done
       // in this optimized path, mostly pushing stuff onto the stack.
+      // eslint-disable-next-line default-case
       switch (workInProgress.tag) {
         case HostRoot:
           pushHostRootContext(workInProgress);
@@ -3249,6 +3265,7 @@ function beginWork(
       }
     }
   } else {
+    // 节点初次渲染
     didReceiveUpdate = false;
   }
 
@@ -3258,7 +3275,8 @@ function beginWork(
   // sometimes bails out later in the begin phase. This indicates that we should
   // move this assignment out of the common path and into each branch.
   workInProgress.lanes = NoLanes;
-
+  // * tag标识节点的类型，节点不同，更新条件也不同
+  // eslint-disable-next-line default-case
   switch (workInProgress.tag) {
     case IndeterminateComponent: {
       return mountIndeterminateComponent(

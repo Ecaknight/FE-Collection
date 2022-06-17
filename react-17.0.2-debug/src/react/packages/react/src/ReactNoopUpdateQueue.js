@@ -103,6 +103,7 @@ const ReactNoopUpdateQueue = {
     callback,
     callerName,
   ) {
+    console.log('enqueueSetState')
     warnNoop(publicInstance, 'setState');
   },
 };

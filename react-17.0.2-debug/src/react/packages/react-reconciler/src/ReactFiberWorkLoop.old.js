@@ -260,7 +260,7 @@ export const NoContext = /*             */ 0b0000000;
 const BatchedContext = /*               */ 0b0000001;
 const EventContext = /*                 */ 0b0000010;
 const DiscreteEventContext = /*         */ 0b0000100;
-const LegacyUnbatchedContext = /*       */ 0b0001000;
+const LegacyUnbatchedContext = /*非批量更新*/ 0b0001000;
 const RenderContext = /*                */ 0b0010000;
 const CommitContext = /*                */ 0b0100000;
 export const RetryAfterError = /*       */ 0b1000000;
@@ -535,7 +535,7 @@ export function scheduleUpdateOnFiber(
 ) {
   checkForNestedUpdates();
   warnAboutRenderPhaseUpdatesInDEV(fiber);
-
+  // * 拿到 FiberRootNode 节点
   const root = markUpdateLaneFromFiberToRoot(fiber, lane);
   if (root === null) {
     warnAboutUpdateOnUnmountedFiberInDEV(fiber);
@@ -612,10 +612,13 @@ export function scheduleUpdateOnFiber(
       // This is a legacy edge case. The initial mount of a ReactDOM.render-ed
       // root inside of batchedUpdates should be synchronous, but layout updates
       // should be deferred until the end of the batch.
+      // * 处理组件的更新
       performSyncWorkOnRoot(root);
     } else {
+      // ? setState这里
       ensureRootIsScheduled(root, eventTime);
       schedulePendingInteractions(root, lane);
+      // * setTime里面的setState，executionContext再执行完成后，又归0了
       if (executionContext === NoContext) {
         // Flush the synchronous work now, unless we're already working or inside
         // a batch. This is intentionally inside scheduleUpdateOnFiber instead of
@@ -623,6 +626,7 @@ export function scheduleUpdateOnFiber(
         // without immediately flushing it. We only do this for user-initiated
         // updates, to preserve historical behavior of legacy mode.
         resetRenderTimer();
+        // ! 原生事件这里，执行更新，所以setState再原生事件是同步的
         flushSyncCallbackQueue();
       }
     }
@@ -1025,6 +1029,7 @@ function performSyncWorkOnRoot(root) {
     // There's a partial tree, and at least one of its lanes has expired. Finish
     // rendering it before rendering the rest of the expired work.
     lanes = workInProgressRootRenderLanes;
+    // *具体执行更新
     exitStatus = renderRootSync(root, lanes);
     if (
       includesSomeLane(
@@ -1238,12 +1243,16 @@ export function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
   const prevExecutionContext = executionContext;
   executionContext &= ~BatchedContext;
   executionContext |= LegacyUnbatchedContext;
+  console.log('====================================');
+  console.log('context', prevExecutionContext, ~BatchedContext, executionContext);
+  console.log('====================================');
   try {
     return fn(a);
   } finally {
     executionContext = prevExecutionContext;
     if (executionContext === NoContext) {
       // Flush the immediate callbacks that were scheduled during this batch
+      // 刷新此批处理期间计划的即时回调
       resetRenderTimer();
       flushSyncCallbackQueue();
     }
@@ -1684,7 +1693,7 @@ function workLoopConcurrent() {
     performUnitOfWork(workInProgress);
   }
 }
-
+// * 更新节点自己 ，返回下一个节点
 function performUnitOfWork(unitOfWork: Fiber): void {
   // The current, flushed, state of this fiber is the alternate. Ideally
   // nothing should rely on this, but relying on it here means that we don't
@@ -1705,8 +1714,10 @@ function performUnitOfWork(unitOfWork: Fiber): void {
   unitOfWork.memoizedProps = unitOfWork.pendingProps;
   if (next === null) {
     // If this doesn't spawn new work, complete the current work.
+    // * 更新任务结束
     completeUnitOfWork(unitOfWork);
   } else {
+    // * 更新下一个任务
     workInProgress = next;
   }
 

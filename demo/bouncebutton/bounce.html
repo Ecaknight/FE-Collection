@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <title>TweenMax弹性按钮</title>
+        <link href="font/iconfont.css" rel="stylesheet">
+        <style>
+            body {
+                background-color: #2a2b30;
+            }
+            button {
+                cursor: pointer;
+            }
+            .menu {
+                width: 300px;
+                height: 200px;
+                margin: 0 auto 70px;
+                position: relative;
+                transform: translateZ(0);
+            }
+            .menu-wrapper {
+                position: absolute;
+                left: 50%;
+                bottom: 10px;
+            }
+            .menu-items {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            .menu-item {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 0;
+                height: 0;
+            }
+            .menu-item-button {
+                width: 60px;
+                height: 60px;
+                margin-left: -30px;
+                margin-top: -30px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: #ad4c4c;
+            }
+            .menu-item-button .iconfont {
+                font-size: 1.5rem;
+                color: #fff;
+                display: inline-block;
+            }
+            .menu-item-bounce {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            .menu-item-button .icon-share {
+  transform: rotate(182deg);
+}
+.menu-item-button .icon-cart {
+  transform: rotate(-120deg);
+}
+.menu-item-button .icon-favorite {
+  transform: rotate(120deg);
+}
+        </style>
+        <script src="js/jquery-1.11.0.min.js"></script>
+        <script src='js/TweenMax.min.js'></script>
+    </head>
+    <body>
+        <div class="content">
+            <div class="menu">
+                <div class="menu-wrapper">
+                    <ul class="menu-items">
+                        <li class="menu-item">
+                            <button class="menu-item-button">
+                                <i class="iconfont icon-cart"></i>
+                            </button>
+                            <div class="menu-item-bounce"></div>
+                        </li>
+                        <li class="menu-item">
+                            <button class="menu-item-button">
+                                <i class="iconfont icon-share"></i>
+                            </button>
+                            <div class="menu-item-bounce"></div>
+                        </li>
+                        <li class="menu-item">
+                            <button class="menu-item-button">
+                                <i class="iconfont icon-favorite"></i>
+                            </button>
+                            <div class="menu-item-bounce"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
